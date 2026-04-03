@@ -51,4 +51,5 @@ with right_column :
     st.markdown(f'Total : {total_layoffs_2025}')
     
 st.write("---") #ขีดเส้นแบ่ง
-
+ 
+## ยังไม่ได้ clean data แยกปีออกมาเป็น 2024 , 2025 , 2026 😡
