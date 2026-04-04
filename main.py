@@ -7,43 +7,40 @@ st.set_page_config(page_title = "Tech Layoffs Dashboard",
                    layout = "wide",
 )   
 
-st.title("AI Job Market Trend 2026 (Raw Data)") 
+st.title("Video Games Sales") 
 
+df = pd.read_csv("assets/vgsales.csv")
 
-df = pd.read_csv("assets/AI_Job_Market_Trends_2026.csv")
-#first_clean-data
-df = df.drop(columns = ['job_id', 'job_posting_month','job_openings']) #ลบ column ที่ไม่จำเป็นออก
+# --- Small clean data ---
+df_2 = df.sample(n = 100,random_state=4) #สุ่มแถวมา 5 แถว , ถ้าไม่มั random state จะสุ่มไปเรื่อยๆใช้อันนี้เพื่อเลือก state ที่แน่นอน 
+df_2.reset_index(drop = True ,inplace = True) # reset index , inplace คือการเปลี่ยนแปลงข้อมูลเดิมโดยไม่ต้องเอาตัวแปรใหม่มารับ , drop คือ drop index เดิมทิ้ง 
+df_2.drop('Rank', axis = 1 , inplace =True , errors = 'ignore')# ลบคอลัม Rank แทนที่ df_2 ที่เดิม และ ไม่สน error เพราะตอนรันที่หลังจะติด error rank ไม่มีอยู่จริงเพราะลบไปแล้ว
+
+df_3 = df_2.copy() # .copy() เพื่อทำสำเนาแยกให้ใช้ memory แยกกัน แต่ถ้า df_3 = df_2 มันจะใช้ memory เดิม แค่เปลี่ยนชื่อจาก df_2 เป็น df_3
+df_3[['NA_Sales','EU_Sales','JP_Sales','Other_Sales','Global_Sales']] = df_3[['NA_Sales','EU_Sales','JP_Sales','Other_Sales','Global_Sales']].astype(str) + ' M'
+
 
 # --- SIDE BAR ---
-
 st.sidebar.header("Filter here") #ตั้งหัวข้อ sidebar
 
-Job = st.sidebar.multiselect(
-    "Select the Job:", #Label
-    options=df["job_title"].unique(),# options คือการตั้งค่าตัวเลือกให้เลือกได้จาก Column    job_title ใน DataFrame df
+Genre_v = st.sidebar.multiselect(
+    "Select the Genre:", #Label
+    options=df["Genre"].unique(),# options คือการตั้งค่าตัวเลือกให้เลือกได้จาก Column Genre ใน DataFrame df
     # .unique() คือคำสั่งของ pandas เพื่อกรองค่าซ้ำออก ให้เหลือที่ไม่ซ้ำ (Unique values)
-    default=df["job_title"].unique() # default คือการตั้งค่าเริ่มต้นให้เลือกทุกอย่างใน Column
+    default=df["Genre"].unique() # default คือการตั้งค่าเริ่มต้นให้เลือกทุกอย่างใน Column
 ) 
 
-Company_Size = st.sidebar.multiselect(
-    "Select the Company Size:",
-    options=df["company_size"].unique(),
-    default=df["company_size"].unique()
+Platform_v = st.sidebar.multiselect(
+    "Select the Platform:",
+    options=df["Platform"].unique(),
+    default=df["Platform"].unique()
 )
 
-df_selection = df.query(
-    "job_title == @Job & company_size == @Company_Size" # @ คือการอ้างอิงถึงซักอย่าง ในที่นี้คือการอ้างอิงถึงตัวแปร Job และ Company_Size
+df_selection = df_3.query(
+    "Genre == @Genre_v & Platform == @Platform_v" # @ คือการอ้างอิงถึงซักอย่าง ในที่นี้คือการอ้างอิงถึงตัวแปร Job และ Company_Size
 )
 
 st.dataframe(df_selection) #แสดงตารางข้อมูลที่ผ่านการกรองแล้ว
-
-## --- AI Market Trend 2026 Dashboard ---
-'''
-.
-.
-.
-.
-''' # รอ clean data ใหม่ก่อนทำ Dashboard
 
 '''
 # --- MAIN PAGE ---
@@ -66,6 +63,21 @@ st.write("---") #ขีดเส้นแบ่ง'''
  
 
 # --- BAR CHART ---
-job_salary = (
-    df_selection.groupby(by=["job_title"])[["salary"]].mean().reset_index() #groupby คือการจัดกลุ่มข้อมูลตาม job_title แล้วคำนวณค่าเฉลี่ยของ salary จากนั้น reset_index() เพื่อให้ job_title กลายเป็น column ปกติ
+
+Total_Sales = (
+    df_2.groupby(by=["Genre"])[["Global_Sales"]].sum().round(1).reset_index() #groupby คือการจัดกลุ่มข้อมูลตาม Genre แล้วคำนวณค่าเฉลี่ยของ Global_Sales จากนั้น reset_index() เพื่อให้ Genre กลายเป็น column ปกติ
+)                                                       #round(1) ปัดขึ้นให้เหลือ 1 ตำแหน่ง
+fig_bar = px.bar(
+    Total_Sales, # ใข้ dataframe
+    x="Global_Sales", #ใช้ column salary เป็นแกน x
+    #y=Total_Sales.index, #ให้แสดงเลข index ของ job_title เป็นแกน y
+    y = Total_Sales.index,
+    title = "<b>Total Global Sales</b>",
+    color_discrete_sequence = ["#0083B8"] * len(Total_Sales),
+    template = "plotly_white"
 )
+
+st.plotly_chart(fig_bar) 
+
+   
+
