@@ -73,16 +73,16 @@ with right_column :
     st.markdown(f'Total : {total_jp_sales} Milliion Dollors')
     
 with left_column_1 :
-    st.subheader("Europe Sales")
+    st.subheader("Europe Sales :")
     st.markdown(f"Total : {total_eu_sales} Million Dollors")
     
 with right_column_1 :
-    st.subheader('Others')
+    st.subheader('Others :')
     st.markdown(f"Total : {total_other_sales} Million Dollors")
     
 
 with center_col :
-    st.subheader("Global Sales")
+    st.subheader("Global Sales :")
     st.markdown(f"Total : {total_global_sales} Million Dollors")
     
 #center_col = (center_col.subheader('Global Sales').markdown(f"Total : {total_global_sales}")) #ใช้ไมได้เพราะsunheader จะ return none
@@ -114,15 +114,23 @@ else :
         y = "Genre", #ให้แสดงเลข index ของ Genre เป็นแกน y
         orientation= 'h', #horizontal bar chart
         title = "<b>Total Global Sales</b>",
-        color_discrete_sequence = ["#F78708"] * len(Total_Sales),
+        color_discrete_sequence = ["#5E17E3"] * len(Total_Sales),
         template = "plotly_white" ,
         text = 'Genre'    
     )
     # --- PLOT BAR CHART ---
     fig_bar.update_traces(
-    texttemplate = "%{x:.1f} M", #ใช้ค่าจากแกน x มาเปลี่ยนให้เป็น str แล้วเขียน M เพื่ม
-    textposition = "outside" #กำหนดข้อความให้อยู่นอกแท่งกราฟ
-)
+        texttemplate = "%{x:.1f} M", #ใช้ค่าจากแกน x มาเปลี่ยนให้เป็น str แล้วเขียน M เพื่ม
+        textposition = "outside" #กำหนดข้อความให้อยู่นอกแท่งกราฟ
+    ).update_layout(
+        plot_bgcolor = "rgba(171, 171, 173, 1)",
+        xaxis = (dict(showgrid = False)),
+        font = (dict(
+                    size = 18,
+                    color = "black"
+                        )
+                    )
+    )
     
     st.plotly_chart(fig_bar)
 
@@ -131,6 +139,18 @@ else :
 #fig_bar_2 = fig_bar[['Global_Sales']].astype(str) + " M"
 #st.plotly_chart(fig_bar_2) 
 #ใช้คำสั่ง pandas ไม่ได้นะอย่าสับสน
+
+
+# --- HIDE STREAMLIT STYLE ---
+hide_st_style = """
+    <style>
+    #MainMenu {visibility : hidden;}
+    footer {visibility : hidden;}
+    </style>
+    """
+    
+st.markdown(hide_st_style , unsafe_allow_html= True)
+
 
 
 
