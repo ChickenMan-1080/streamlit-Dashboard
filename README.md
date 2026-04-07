@@ -7,6 +7,7 @@ A hands-on project focused on mastering Data Visualization and interactive Dashb
 **note :** I'm still in learning progress It's far from perfect But I'll do Better and I'll find a way to make it useful to this world!
 
 ## Tools
+
 **IDE :** Visual Studio Code
 **Language :** Python
 **Library :** streamlit , pandas , plotly
