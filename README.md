@@ -14,4 +14,8 @@ A hands-on project focused on mastering Data Visualization and interactive Dashb
 
 
 ## Dataset
-**Source :** Video Game Sales [Kaggle!](https://www.kaggle.com/datasets/gregorut/videogamesales) 
+- **Source :** Video Game Sales [Kaggle!](https://www.kaggle.com/datasets/gregorut/videogamesales) 
+
+## Youtube tutorial 
+
+- **Youtube tutorial** That i watched to guided me : [Coding Is Fun](https://youtu.be/Sb0A9i6d320?si=RrsY7Hr5VJDKXGDI)
