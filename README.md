@@ -10,7 +10,7 @@ A hands-on project focused on mastering Data Visualization and interactive Dashb
 - **IDE :** Visual Studio Code
 - **Language :** Python
 - **Library :** streamlit , pandas , plotly
-- **AI Assistant :** Gemini , Claude (To help to adapt , explain some confusion and complex concepts on my website
+- **AI Assistant :** Gemini , Claude (To help to adapt , explain some confusion and complex code concepts on my website
 
 
 ## Dataset
